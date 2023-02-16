@@ -9,6 +9,8 @@ function getComputerChoice() {
 const player = "Rock";
 const computer = getComputerChoice();
 
+let score = 0;
+
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toUpperCase();
   computerSelection = computerSelection.toUpperCase();
@@ -41,6 +43,67 @@ function game() {
   }
 }
 
-game();
+function playButtons() {
+    // buttons is a node list. It looks and acts much like an array.
+  const buttons = document.querySelectorAll('button');
+
+  console.log(buttons.length);
+
+  // we use the .forEach method to iterate through each button
+  buttons.forEach((button) => {
+
+      // and for each one we add a 'click' listener
+      button.addEventListener('click', () => {
+        const playerMove = button.textContent;
+        const computerMove = getComputerChoice();
+
+        createText("You chose: " + playerMove);
+        createText("Computer chose: " + computerMove);
+        
+        const result = playRound(playerMove, computerMove);
+        updateRunningScore(getScore(result));
+
+        alert(result);
+      });
+  });
+}
+
+function getScore(result) {
+  if(result == "You win!") { 
+    score++;
+  } else {
+    if(score > 0) 
+      score--; 
+  }
+
+  return score;
+}
+
+function createText(string) {
+  const container = document.querySelector('#container');
+  const content = document.createElement('p');
+  content.textContent = string;
+  container.appendChild(content);
+}
+
+function updateRunningScore(string) {
+  const result = document.querySelector('.result');
+
+  if(result != undefined || result != null) {
+    result.textContent = "Score: " + string.toString();
+  } else {
+    const container = document.querySelector('#container');
+    const content = document.createElement('h3');
+    content.classList.add('result');
+    content.textContent = "Score: " + string.toString();
+    container.appendChild(content);
+  }
+}
+
+
+
+playButtons();
+
+//game();
 
 
